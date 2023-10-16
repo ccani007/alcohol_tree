@@ -1,0 +1,113 @@
+---
+title: "Alcohol Analysis"
+format: html
+date: "Oct 16, 2023"
+author: "Catalina Canizares"
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r}
+library(tidymodels)
+library(tidyverse)
+library(dissertationData)
+library(gtsummary)
+library(mice)
+
+```
+
+```{r}
+data("clean_yrbs_2021")
+
+```
+
+
+```{r}
+analysis <-
+  clean_yrbs_2021 |>
+  select(-c(
+    Weight, DrivingDrinking, CurrentlySmokingCigarette,
+    StoreSourceVaping, CurrentlySmokingCigar, CurrentlyBingeDrinking,
+    UseCondom, NoFruitJuice, NoSalad, NoCarrots, NoSoda, NoBreakfast,
+    HIVTested, DentistVisit, NoSportsDrinks, ExcerciseMuscles, Height,
+    SexofSexualContact, DrinkingDriver, TextingDriving,
+    MoreThan10CigPerDay, CurrentlyUseMarihuana, Sex4OrMorePartners,
+    AlcoholOrDrugsSex, BirthControl, WeightLoss, NoFruit,
+    NoPotatoes, NoOtherVeggies, NoMilk, PhysicalActivity,
+    AttendedPEClass, STDTested, NoDrinksWater, Sunburn,
+    EnglishProficiency, CurrentlySmokelessTobacco, MoreThan10Drinks,
+    FirstAlcoholBefore13, SexBefore13, SexuallyActive, EverHadSex,
+    FirstMarihuanaBefore13, SuicideInjuryMedicalAttention
+  ))
+```
+
+
+
+# Multiple Imputation 
+
+```{r}
+md.pattern(analysis$CurrentlyAlcohol)
+```
+
+```{r}
+ini <- mice(analysis, maxit=0)
+meth <- ini$method
+meth["CurrentlyAlcohol"] <- "logreg" #logreg' is for binary data
+
+imputed_data <- mice(analysis, method=meth, m=5) # m=5 creates 5 imputed datasets
+
+complete_data_cr <-complete(imputed_data, "long")
+saveRDS(complete_data_cr, "imputed_data.rds")
+
+
+fit <- with(data=imputed_data, exp=glm(CurrentlyAlcohol ~ ParentalMonitoring, family="binomial"))
+pooled_results <- pool(fit)
+summary(pooled_results)
+
+
+
+summary(complete_data_cr)
+```
+
+
+The table presents demographic insights into current alcohol consumption among a group. Out of those surveyed, 27% of females and 19% of males indicated they currently consume alcohol. In terms of racial breakdown, the highest alcohol consumption rates were observed among the American Indian/Alaska Native demographic at 32%, while the lowest was among Asians at 11%. Regarding sexual orientation, bisexual respondents had the highest alcohol consumption rate at 32%. Conversely, heterosexual respondents showed a rate of 22%. When looking at grade levels, 12th graders reported the highest alcohol consumption at 32%, with 9th graders having the lowest rate at 15%.
+
+```{r}
+# This options worked to fix the warning: "Stratum (103) has only one
+#  PSU at stage 1"
+options(survey.adjust.domain.lonely = TRUE)
+options(survey.lonely.psu = "adjust")
+
+
+alcohol_use_demographics <-
+  analysis |>
+  mutate(CurrentlyAlcohol = case_when(
+    CurrentlyAlcohol == 0 ~ "No",
+    CurrentlyAlcohol == 1 ~ "Yes"
+  )) |>
+  mutate(Grade = factor(Grade, levels = c("9", "10", "11", "12"))) |>
+  mutate(CurrentlyAlcohol = factor(CurrentlyAlcohol, levels = c("Yes", "No")))
+
+
+alcohol_use_demographics_srv <- 
+survey::svydesign(
+  data = alcohol_use_demographics,
+  ids = ~psu,
+  weights = ~weight,
+  strata = ~stratum,
+  nest = TRUE
+) 
+
+tbl_svysummary(
+    data = alcohol_use_demographics_srv,
+    include = c(Sex, Race, SexOrientation, Grade),
+    sort = c(SexOrientation, Race) ~ "frequency", 
+    by = CurrentlyAlcohol, 
+    percent = "row") |>
+  modify_caption("Demographic Breakdown of Current Alcohol Use: 
+                 Based on 2021 YRBS Data") |>
+  bold_labels()
+```
+             
+
