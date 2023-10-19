@@ -1,11 +1,9 @@
 ---
-title: "Predicting PTSD Diagnosis in a Cohort of First Responders to the 9/11 Attacks: A Supervised Machine Learning Approach Using Classification Trees"
+title: "Understanding Adolescent Alcohol Use: A Decision Tree Analysis of YRBSS Data"
 author:
-  - name: Catalina Cañizares
+  - name: Isis Panellas
     affil: 1
-  - name: Roberto Lucchini
-    affil: 1
-  - name: Mark J. Macgowan
+  - name: Catalina Canizares
     affil: 1
 affiliation:
   - num: 1
@@ -15,7 +13,7 @@ main_findings:
   - "The level of **emotional distress** felt during the rescue efforts especially if this **interacts** with seeing **personal effects of victims in site**, having **past trauma** and being **45 or older** **increases** the chances of **PTSD diagnosis**." 
   - "Individuals **34 or older** with **higher emotional distress** and **past trauma** have **higher chances of PTSD**"
   - "**Younger individuals** under 34 years old with **lower emotional distress** and **not exposed to victims or materials** have **lower chances of PTSD**" 
-  - '![](img/tree.png){.main_pic width=80%}'
+  - '![](/tree.png){.main_pic width=80%}'
 
 logoleft_name: '![](https://brand.fiu.edu/_assets/images/fiu-alone.png){.main-img-left}'
 primary_colour: "#081E3F"
