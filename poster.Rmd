@@ -191,3 +191,7 @@ Our study clarify the risk factors contributing to alcohol use among adolescents
 Despite the insights provided, our study's cross-sectional design precludes us from inferring causation from the associations identified. Therefore, future research should implement longitudinal designs that can trace these risk factors over time, offering a clearer view of their causal relationships and the development of tailored preventive measures. Building on our study’s foundation and addressing its limitations will not only enhance our understanding of adolescent alcohol use but also support the advancement of targeted intervention strategies.
 
 ## References
+
+```{r,  echo=FALSE, out.width="15%", fig.align='center'}
+knitr::include_graphics("References_QR_Code.png")
+```
