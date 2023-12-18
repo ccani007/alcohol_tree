@@ -9,17 +9,17 @@ affiliation:
   - num: 1
     address: Robert Stempel College of Public Health and Social Work, Florida International University
 main_findings:
-  - "The **primary determinant** in **PTSD diagnosis** following exposure to the 9/11 World Trade Center Terorist Attacks is the **severity of physical illness**"
-  - "The level of **emotional distress** felt during the rescue efforts especially if this **interacts** with seeing **personal effects of victims in site**, having **past trauma** and being **45 or older** **increases** the chances of **PTSD diagnosis**." 
-  - "Individuals **34 or older** with **higher emotional distress** and **past trauma** have **higher chances of PTSD**"
-  - "**Younger individuals** under 34 years old with **lower emotional distress** and **not exposed to victims or materials** have **lower chances of PTSD**" 
-  - '![](/tree.png){.main_pic width=80%}'
-
+  - "According to Figure 1"
+  - "The study found a strong link between **vaping** and alcohol consumption among adolescents, with **87.5%** of those **currently vaping also using alcohol**."
+  - "Additional layers of complexity are introduced when considering other factors like **marijuana** and **pain medicine** use, **racial background**, and **hopelessness**. For example, among non-vapers, marijuana use and feelings of hopelessness are associated with **current alcohol consumption**." 
+  - "**Gender** also plays a role, particularly in adolescents who do not vape but have used marijuana and belong to specific racial groups; **70.2% of males** in this subset **answered no to current** use compared to **52.6%** of **females who currenylu consume it**." 
+  - "*Figure 1, Current Alcohol Use in Youth Decision Tree*"
+  - '![](outputs/tree.png){.main_pic width=100%}'
 logoleft_name: '![](https://brand.fiu.edu/_assets/images/fiu-alone.png){.main-img-left}'
 primary_colour: "#081E3F"
 titlebox_bordercol: "#B6862C"
-main_textsize: "60px"
-body_textsize: "30px"
+main_textsize: "50px"
+body_textsize: "37px"
 main_width: 0.4
 title_textsize: "90px"
 output: 
@@ -30,7 +30,8 @@ output:
     number_sections: false
 knit: pagedown::chrome_print
 link-citations: true
-bibliography: references.bib
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include=FALSE}
@@ -59,109 +60,130 @@ knitr::write_bib(c('posterdown', 'rmarkdown','pagedown'), 'packages.bib')
 
 ## Introduction
 
-First Responders line of work places them at a heightened risk of psychological distress, which can impact their overall well-being and ability to continue their service [@Obuobi]. Notably, studies examining first responders who served during the 9/11 attacks reveal lower PTSD prevalence than other populations in the first 3 years following 9/11, but show substantial increase in prevalence after that point [@Lowell].
-
-Given the susceptibility of first responders to developing PTSD, it becomes imperative to investigate the factors that elevate this risk. This study seeks to address this by employing Tree-based methods, which provide an intuitive approach to observe risk factors. These methods are able to capture non-linear effects and interactions, without a priori specification [@Banerjee]. In light of these advantages this algorithm can be instrumental in offering preventive measures, ensuring that first responders with particular risk factor combinations receive mental health services when needed most.
-
-Hence, the primary aim of this study is to construct a tool that empowers frontline mental health professionals to construct a well-organized interactive risk map. This map will enable the vigilant monitoring of first responders who may be at risk of developing PTSD, providing an invaluable resource for the provision of timely and tailored mental health services.
+Substance use among adolescents in the United States represents a substantial public health challenge. According to the National Survey on Drug Use and Health, approximately 22.9% of individuals aged 12 to 17 have consumed alcohol at least once (SAMHSA, 2021). The ramifications of substance use during this developmental stage are extensive, with correlations to detrimental mental health outcomes (Esmaeelzadeh et al., 2018; Kim, 2021; Meza et al., 2023), compromised academic performance (Bryant et al., 2003; Huỳnh et al., 2019), increased delinquency and criminal behavior (Childs et al., 2023; Gajos et al., 2023; Hoeben et al., 2021; Lee et al., 2022; Warren et al., 2016), and higher instances of teen pregnancy (Russotti et al., 2023; Salas-Wright et al., 2015, 2016). Given the prevalence and severe consequences of adolescent alcohol use, it is imperative to examine the factors that predispose youth to substance use, identifying those at elevated risk, and developing targeted preventative programs. This study used the 2021 Youth Risk Behavior Surveillance System (YRBSS) dataset to investigate the primary risk factors and their interplay. Our analysis seeks to understand patterns that could inform more efficacious preventive and intervention approaches, with the ultimate goal of preventing alcohol use among adolescents.
 
 
 ## Methods
+### Data Source
+- Utilized the 2021 Youth Risk Behavior Survey (YRBS) dataset.
+- Weighted sample of 17,232 adolescents.
+- Analyzed 55 variables, including alcohol and substance use, risky behaviors, dietary habits, hopelessness, suicidality, and physical activity.
 
-Mental health data was obtained through structured interviews conducted during their second visit to the World Trade Center Health Program, where a clinician established a PTSD diagnosis. This diagnosis serves as the primary outcome variable in this study. The predictors were carefully selected based on a review of relevant literature and derived from these interviews. These variables encompass aspects such as trauma exposure, hazardous material exposure, prior traumatic experiences, physical health, emotional distress, and demographics. This comprehensive dataset comprises 32 predictors in addition to the PTSD diagnosis. The dataset was partitioned into 70% for training and 30% for testing, utilizing stratification to ensure a representative split. Hyperparameter optimization was performed using a 5-fold cross-validation approach, fine-tuning the model for optimal performance.
+### Data Preprocessing
+- Missing data assessed and determined to be missing at random (MAR).
+- Multiple imputation methods used to handle missing values.
+
+### Resmapling methods
+- 75% training set and 25% testing set to evaluate algorithm performance.
+- Used five-fold cross-validation for hyperparameter tuning of the decision tree algorithm.
+- Initial poor sensitivity led to the application of downsampling methods to balance classes.
+Algorithm retrained and tested using the balanced dataset.
 
 ## Results
 
-The study sample consisted of 1,107 9/11 first responders who have relocated to the state of Florida, with a predominant representation of males (87%), and the average age at the time of the 9/11 attacks was 39.7 years.  Table 1 displays the demographic characteristics stratified by the presence or absence of a PTSD diagnosis.
+Table 1 presents the demographic distribution of current alcohol use from the 2021 YRBS data. Out of the sample, 4,045 individuals reported current alcohol use. A breakdown by gender indicates that 27% of females and 20% of males currently consume alcohol. American Indian/Alaska Natives lead in alcohol use prevalence, followed closely by White respondents and then by those identifying as Multiple-Hispanic. On the contrary, the Asian group reported the lowest alcohol consumption rates among all racial categories. In terms of sexual orientation, bisexual respondents reported the highest prevalence of alcohol use at 32%. This is followed by those who identified as "not sure", while both homosexual and heterosexual groups presented similar rates of alcohol consumption
 
-```{r, demographics, out.width="80%"}
-analysis_df <- 
-  readRDS(here::here("tree","analysis_df.rds"))
+<br/>
+<br/>
 
-analysis_df |>
-  rename("Age at 911" = Age911, 
-         "PCL Score" = PCL) |> 
-  tbl_summary(
-    include = c("PCL Score", "Age at 911", Sex,  Race, Hispanic,  Education), 
-    statistic = list(all_continuous() ~ "{mean} ({sd})"), 
-    digits = list("PCL Score" ~ 1, 
-                  "Age at 911" ~ 1),  
-    by = ptsd_symptoms, 
-    missing = "no") |> 
+### Table 1, Demographic Breakdown of Current Alcohol Use: Based on 2021 YRBS Data [n = 17,232]
+
+```{r, demographics, out.width="100%"}
+# This options worked to fix the warning: "Stratum (103) has only one
+#  PSU at stage 1"
+options(survey.adjust.domain.lonely = TRUE)
+options(survey.lonely.psu = "adjust")
+
+
+imputed_data <- 
+  readRDS("imputed_data.rds")
+
+alcohol_use_demographics <-
+  imputed_data |>
+   filter(.imp == 1) |> 
+  mutate(CurrentlyAlcohol = case_when(
+    CurrentlyAlcohol == 0 ~ "No",
+    CurrentlyAlcohol == 1 ~ "Yes"
+  )) |>
+  mutate(Grade = factor(Grade, levels = c("9", "10", "11", "12"))) |>
+  mutate(CurrentlyAlcohol = factor(CurrentlyAlcohol, levels = c("Yes", "No")))
+
+alcohol_use_demographics_srv <- 
+survey::svydesign(
+  data = alcohol_use_demographics,
+  ids = ~psu,
+  weights = ~weight,
+  strata = ~stratum,
+  nest = TRUE
+) 
+
+tbl_svysummary(
+    data = alcohol_use_demographics_srv,
+    include = c(Sex, Race, SexOrientation, Grade),
+    sort = c(SexOrientation, Race) ~ "frequency", 
+    by = CurrentlyAlcohol, 
+    missing = "no", 
+    percent = "row") |>
+  # modify_caption("Demographic Breakdown of Current Alcohol Use: Based on 2021 YRBS Data [N = 17,232]") |>
+  modify_header(label = "Current Alcohol Use") |> 
   bold_labels() |> 
-  # modify_spanning_header(c("stat_1", "stat_2") ~ "**Current PTSD**") |> 
-  modify_header(label ~ "") |> 
-  modify_caption("First Responders 9/11 by PTSD Diagnosis") |> 
-  add_overall( last = TRUE) |> 
-  add_p() |> 
   as_gt() |> 
-  tab_options(table.font.size = 30)
-```
-
-<br/>
-<br/>
-
-In the assessment of the algorithm's performance on the training dataset, we observe a strong AUC value of 0.84, as depicted in Figure 2.
-
-```{r roc, echo=FALSE,collapse=TRUE, out.width="80%"}
-tree_pred <- readRDS(here::here ("outputs", "tree_pred.rds"))
-
-tree_pred |> 
-  roc_curve(truth = ptsd_symptoms, 
-           .pred_Yes, 
-           event_level = "second") |> 
-  autoplot() 
+  tab_options(
+    table.font.size = 25,
+    footnotes.font.size = 5
+  ) 
+  
 ```
 
 
-Table 2 presents the accuracy rate, sensitivity and specificity percentages surpassing the 70% mark. These findings collectively highlight the algorithm's proficiency in classifying cases, particularly with a focus on sensitivity
+Table 2 displays the performance metrics of the model on both training and testing datasets. On the training set, the model achieved a sensitivity of 0.80, indicating it correctly identified 80% of the positive cases. The specificity, representing the model's ability to correctly identify negative cases, stood at 0.77 for both training and testing sets. The overall accuracy, or the proportion of true results among the total number of cases examined, was 0.78 for the training set and 0.77 for the testing set. These metrics suggest that the model demonstrates consistent performance across both training and unseen data.
 
-However, when these same metrics are evaluated on the testing set, all metrics drop to levels around the 60s%, indicating that the algorithm's performance is only marginally better than random classification. These findings strongly suggest that the algorithm is overly tailored to the specific characteristics of the training dataset, implying overfitting. Consequently, it should not be considered a reliable and generalizable tool for first responders dealing with mass casualty events.
+### Table 2, Performance Metrics for the Classification Tree
 
 ```{r metrics, fig.align='center'}
-metrics_table <- 
-  readRDS(here::here("outputs", "metrics_table.rds")) |> 
-  mutate(Dataset = "Training")
+metrics_train <- 
+  readRDS(here::here("outputs", "metrics_training.rds")) |> 
+  mutate(Dataset = "Training") |> 
+  rename(Metric = .metric, 
+         Estimate = .estimate) |> 
+  select(-c(.estimator))
+
 metrics_test <- 
-  readRDS(here::here("outputs", "metrics_result_test.rds")) |> 
+  readRDS(here::here("outputs", "metrics_testing.rds")) |> 
   mutate(Dataset = "Testing") |> 
   rename(Metric = .metric, 
          Estimate = .estimate) |> 
-  select(-c(.estimator, .config))
+  select(-c(.config, .estimator)) |> 
+  mutate(Metric = str_replace(Metric, "sens", "sensitivity"), 
+         Metric = str_replace(Metric, "spec", "specificity"))
   
 
 metrics_total_table <- 
-  bind_rows(metrics_table, metrics_test) |> 
+  bind_rows(metrics_train, metrics_test) |> 
   mutate(Metric = str_to_title(Metric)) |> 
-  pivot_wider(names_from = "Metric", values_from = "Estimate") |> 
-  rename(AUC = Roc_auc)
+  pivot_wider(names_from = "Metric", values_from = "Estimate")  
+
 
 gt::gt(metrics_total_table) |> 
    tab_options(
-    table.font.size = 30,
+    table.font.size = 25,
     footnotes.font.size = 5
   ) |> 
-  # gt::tab_header(
-  #   title = "Performance Metrics for the Classification Tree",
-  #   subtitle = "Predicting PTSD Diagnosis Among a Subset of 9/11 First Responders"
-  # ) |> 
+ # gt::tab_header(
+ # title = "Performance Metrics for the Classification Tree",
+ #  #   subtitle = "Predicting PTSD Diagnosis Among a Subset of 9/11 First Responders"
+ #   ) |> 
   fmt_number(
-    columns = c(Sensitivity, Specificity, Accuracy, AUC),
+    columns = c(Sensitivity, Specificity, Accuracy),
     decimals = 2,
     use_seps = FALSE
-  ) |> 
-  tab_source_note(
-    source_note = "AUC: Area Under the Curve")
+  ) 
 ```
 
 ## Discussion 
 
-This study aimed to find the primary risk factors and their interaction in predicting a PTSD diagnosis within a cohort of 9/11 first responders who had relocated to Florida, using tree-based methods. The results of this study highlight several key risk factors that contribute to the likelihood of a PTSD diagnosis within this sample. 
+Our study clarify the risk factors contributing to alcohol use among adolescents. Results show vaping, marijuana, pain medication, and cigarette use as key contributors. These findings echo the notion of vaping as an entry point to other substance use, a stance supported by recent research (Boccio et al., 2022). Our analysis also highlights a prevalent trend of polysubstance use rather than isolated substance use, which is corroborated by data indicating a significant proportion of adolescents engaging in the concurrent use of alcohol and other substances (Goodwin et al., 2022).
 
-These risk factors identified in this analysis align with previous research, reinforcing the significance of exposure intensity and 9/11-related injury as primary contributors to PTSD risk, as noted in prior studies [@Lowell]. Literature reviews conducted in the decade following the event also consistently emphasized the influence of higher initial emotional responses and older age on PTSD risk [@neria]. This research contributes by not only confirming these findings but also by revealing how they interact with other factors.
-
-In this regard, Classification Trees stand out as powerful statistical learning methods for efficiently identifying valuable predictors of an outcome and uncovering interactions among these predictors. The use of trees in this study provides a predictive model that can aid clinical decision-making in diagnosing PTSD among first responders.
-
-However, it's essential to acknowledge the limitations of this study. The non-random sample and the cross-sectional nature of the data may restrict the generalizability of the findings, as this sample specifically comprises first responders relocated to Florida. A thorough analysis comparing this sample to the broader population of 9/11 first responders is lacking. Additionally, overfitting is a concern given the unique characteristics of this population and the chosen technique. Future research should consider employing methods like Random Forest or Boosted Trees to reduce overfitting and enhance the model's generalizability and predictive accuracy.
+Despite the insights provided, our study's cross-sectional design precludes us from inferring causation from the associations identified. Therefore, future research should implement longitudinal designs that can trace these risk factors over time, offering a clearer view of their causal relationships and the development of tailored preventive measures. Building on our study’s foundation and addressing its limitations will not only enhance our understanding of adolescent alcohol use but also support the advancement of targeted intervention strategies.
 
 ## References

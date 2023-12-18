@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>Understanding Adolescent Alcohol Use: A Decision Tree Analysis of YRBSS Data</title>
+
+
+
+
+
+
+
+<!--
+Font-awesome icons ie github or twitter
+-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/brands.css" integrity="sha384-n9+6/aSqa9lBidZMRCQHTHKJscPq6NW4pCQBiMmHdUCvPN8ZOg2zJJTkC7WIezWv" crossorigin="anonymous">
+
+<!--
+Google fonts api stuff
+-->
+<link href='https://fonts.googleapis.com/css?family=Special Elite' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Rasa' rel='stylesheet'>
+
+<!--
+Here are the required style attributes for css to make this poster work :)
+-->
+<style>
+@page {
+size: 46in 32in;
+margin: 0;
+padding: 0;
+background-color: #ffffff;
+}
+body {
+margin: 0px;
+padding: 0px;
+width: 46in;
+height: 32in;
+text-align: justify;
+font-size: 37px;
+background-color: #FFFFFF;
+color: #000000;
+}
+/* RMarkdown Class Styles */
+/* center align leaflet map,
+from https://stackoverflow.com/questions/52112119/center-leaflet-in-a-rmarkdown-document */
+.html-widget {
+margin: auto;
+position: sticky;
+margin-top: 2cm;
+margin-bottom: 2cm;
+}
+.leaflet.html-widget.html-widget-static-bound.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom {
+position: sticky;
+width: 100%;
+}
+pre.sourceCode.r, pre.sourceCode.python {
+background-color: #ffffff20;
+border: solid #008080 1mm;
+border-radius: 0.5em;
+padding: 4mm;
+margin: auto;
+margin-top: 1em;
+margin-bottom: 1em;
+/* align-items: center; */
+}
+div.sourceCode {
+background-color: transparent;
+width: 85%;
+margin-left: auto;
+margin-right: auto;
+}
+code.sourceCode.r, code.sourceCode.python {
+background-color: transparent;
+font-size: 20pt;
+border-radius: 2mm;
+}
+code {
+font-size: 25pt;
+font-family: monospace;
+background-color: #00808024;
+color: #008080;
+padding: 1.2mm;
+line-height: 1;
+border-radius: 2mm;
+}
+caption {
+margin-bottom: 10px;
+font-size: 20pt;
+font-style: italic;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #081E3F20;
+}
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{
+  border-spacing: 0;
+  font-size: 40%;
+  border-style: none;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 1em;
+  padding-left: 1em;
+  line-height: 1em;
+}
+table {
+  margin: auto;
+}
+th {
+  padding-left: 5mm;
+  padding-right: 5mm;
+}
+.caption {
+font-size: 20pt;
+font-style: italic;
+padding-top: 0;
+}
+.references {
+font-size: 20px;
+line-height: 90%;
+}
+/* Create three unequal columns that floats next to each other */
+.column {
+float: left;
+padding: 0px;
+}
+.outer {
+width: 46in;
+height: 32in;
+-webkit-column-count: 2; /* Chrome, Safari, Opera */
+-moz-column-count: 2; /* Firefox */
+column-count: 2;
+-webkit-column-fill: auto;
+-moz-column-fill: auto;
+column-fill: auto;
+-webkit-column-rule-width: 0.4;
+-moz-column-rule-width: 0.4;
+column-rule-width: 0.4;
+-webkit-column-rule-style: solid;
+-moz-column-rule-style: solid;
+column-rule-style: solid;
+-webkit-column-rule-color: black;
+-moz-column-rule-color: black;
+column-rule-color: black;
+-webkit-column-gap: calc(0.4 * 100%);
+background-color: #ffffff;
+font-family: Rasa;
+color: #000000;
+}
+span.citation {
+  color: #008080;
+  font-weight: bold;
+}
+a {
+text-decoration: none;
+color: #008080;
+}
+#title {
+font-size: 90px;
+text-align: left;
+margin: 0;
+line-height: 90%;
+border-bottom: 0;
+}
+#author {
+color: #081E3F;
+margin: 0;
+text-align: left;
+line-height: 65%;
+font-size: 1.17em;
+}
+#affiliation {
+padding-top: 1em;
+color: #00000060;
+font-style: italic;
+font-size: 25px;
+margin: 0;
+}
+sup {
+color: #cc0000;
+}
+.affiliation sup {
+font-size: 20px;
+}
+.author sup {
+font-size: 30px;
+}
+.author_extra {
+color: #008080;
+margin: 0;
+line-height: 85%;
+font-size: 35px;
+}
+.outer h1 {
+text-align: center;
+margin-top: 0.5in;
+margin-bottom: 0.5in;
+}
+.outer h2 {
+text-align: center;
+}
+.outer p {
+color: #000000;
+}
+.outer ol {
+text-align: left;
+}
+.main {
+width: calc(46in * 0.4);
+height: 32in;
+position: absolute;
+margin-left: calc(46in * ((1 - 0.4) / 2));
+background-color: #081E3F;
+color: #FFFFFF90;
+font-family: Special Elite;
+background-image: linear-gradient(#081E3F 50%, #008080);
+}
+.main strong {
+color: #FFFFFF;
+}
+img.main-img-left {
+width: 20%;
+left: 0.5in;
+bottom: 0.2in;
+position: absolute;
+}
+img.main-img-right {
+width: 18%;
+right: 0.5in;
+bottom: 0.2in;
+position: absolute;
+}
+.main p {
+padding-top: 20%;
+font-size: 50px;
+text-align: left;
+}
+.fab {
+color: #00000060;
+font-size: 25px;
+}
+.twitter, i {
+color: #00000060;
+font-size: 35px;
+text-decoration: none;
+}
+a.email {
+text-decoration: none;
+color: #00000060;
+font-size: 35px;
+}
+.envelope {
+color: #00000060;
+font-size: 5px;
+text-decoration: none;
+}
+.globe {
+color: #00000060;
+font-size: 5px;
+text-decoration: none;
+}
+.github > .fab {
+color: #00000060;
+font-size: 40px;
+text-decoration: none;
+}
+.globetext {
+color: #00000060;
+font-size: 35px;
+text-decoration: none;
+}
+.poster_wrap {
+width: 46in;
+height: 32in;
+padding: 0cm;
+background-color: #ffffff;
+}
+span > #tab:mytable {
+  font-weight: bold;
+}
+.section {
+  padding-left: 10mm;
+  padding-right: 10mm;
+}
+.main p {
+  padding-left: 30mm;
+  padding-right: 30mm;
+}
+.main_pic {
+  width: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.orcid img {
+  width: 3%;
+}
+</style>
+</head>
+<body>
+
+
+<div class="poster_wrap">
+<div class="column outer">
+<br>
+<div class="title section">
+<h1 id="title">Understanding Adolescent Alcohol Use: A Decision Tree Analysis of YRBSS Data</h1>
+<br>
+<h3 id="author" class="author">
+
+ </h3>
+
+<h5 id="author_extra" class="author_extra">
+Isis Panellas<sup>1</sup>
+ Catalina Canizares<sup>1</sup>
+</h5>
+
+<p id="affiliation" class="affiliation">
+<sup>1</sup> Robert Stempel College of Public Health and Social Work, Florida International University
+</p>
+
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Substance use among adolescents in the United States represents a substantial public health challenge. According to the National Survey on Drug Use and Health, approximately 22.9% of individuals aged 12 to 17 have consumed alcohol at least once (SAMHSA, 2021). The ramifications of substance use during this developmental stage are extensive, with correlations to detrimental mental health outcomes (Esmaeelzadeh et al., 2018; Kim, 2021; Meza et al., 2023), compromised academic performance (Bryant et al., 2003; Huỳnh et al., 2019), increased delinquency and criminal behavior (Childs et al., 2023; Gajos et al., 2023; Hoeben et al., 2021; Lee et al., 2022; Warren et al., 2016), and higher instances of teen pregnancy (Russotti et al., 2023; Salas-Wright et al., 2015, 2016). Given the prevalence and severe consequences of adolescent alcohol use, it is imperative to examine the factors that predispose youth to substance use, identifying those at elevated risk, and developing targeted preventative programs. This study used the 2021 Youth Risk Behavior Surveillance System (YRBSS) dataset to investigate the primary risk factors and their interplay. Our analysis seeks to understand patterns that could inform more efficacious preventive and intervention approaches, with the ultimate goal of preventing alcohol use among adolescents.</p>
+</div>
+<div id="methods" class="section level2">
+<h2>Methods</h2>
+<div id="data-source" class="section level3">
+<h3>Data Source</h3>
+<ul>
+<li>Utilized the 2021 Youth Risk Behavior Survey (YRBS) dataset.</li>
+<li>Weighted sample of 17,232 adolescents.</li>
+<li>Analyzed 55 variables, including alcohol and substance use, risky behaviors, dietary habits, hopelessness, suicidality, and physical activity.</li>
+</ul>
+</div>
+<div id="data-preprocessing" class="section level3">
+<h3>Data Preprocessing</h3>
+<ul>
+<li>Missing data assessed and determined to be missing at random (MAR).</li>
+<li>Multiple imputation methods used to handle missing values.</li>
+</ul>
+</div>
+<div id="resmapling-methods" class="section level3">
+<h3>Resmapling methods</h3>
+<ul>
+<li>75% training set and 25% testing set to evaluate algorithm performance.</li>
+<li>Used five-fold cross-validation for hyperparameter tuning of the decision tree algorithm.</li>
+<li>Initial poor sensitivity led to the application of downsampling methods to balance classes.
+Algorithm retrained and tested using the balanced dataset.</li>
+</ul>
+</div>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>Table 1 presents the demographic distribution of current alcohol use from the 2021 YRBS data. Out of the sample, 4,045 individuals reported current alcohol use. A breakdown by gender indicates that 27% of females and 20% of males currently consume alcohol. American Indian/Alaska Natives lead in alcohol use prevalence, followed closely by White respondents and then by those identifying as Multiple-Hispanic. On the contrary, the Asian group reported the lowest alcohol consumption rates among all racial categories. In terms of sexual orientation, bisexual respondents reported the highest prevalence of alcohol use at 32%. This is followed by those who identified as “not sure”, while both homosexual and heterosexual groups presented similar rates of alcohol consumption</p>
+<p><br/>
+<br/></p>
+<div id="table-1-demographic-breakdown-of-current-alcohol-use-based-on-2021-yrbs-data-n-17232" class="section level3">
+<h3>Table 1, Demographic Breakdown of Current Alcohol Use: Based on 2021 YRBS Data [n = 17,232]</h3>
+<div id="hvlqeosuxb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hvlqeosuxb table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#hvlqeosuxb thead, #hvlqeosuxb tbody, #hvlqeosuxb tfoot, #hvlqeosuxb tr, #hvlqeosuxb td, #hvlqeosuxb th {
+  border-style: none;
+}
+
+#hvlqeosuxb p {
+  margin: 0;
+  padding: 0;
+}
+
+#hvlqeosuxb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 25px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#hvlqeosuxb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hvlqeosuxb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hvlqeosuxb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hvlqeosuxb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hvlqeosuxb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hvlqeosuxb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hvlqeosuxb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hvlqeosuxb .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#hvlqeosuxb .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#hvlqeosuxb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hvlqeosuxb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hvlqeosuxb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hvlqeosuxb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hvlqeosuxb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hvlqeosuxb .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#hvlqeosuxb .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#hvlqeosuxb .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#hvlqeosuxb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hvlqeosuxb .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#hvlqeosuxb .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hvlqeosuxb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hvlqeosuxb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_footnote {
+  margin: 0px;
+  font-size: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hvlqeosuxb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hvlqeosuxb .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hvlqeosuxb .gt_left {
+  text-align: left;
+}
+
+#hvlqeosuxb .gt_center {
+  text-align: center;
+}
+
+#hvlqeosuxb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hvlqeosuxb .gt_font_normal {
+  font-weight: normal;
+}
+
+#hvlqeosuxb .gt_font_bold {
+  font-weight: bold;
+}
+
+#hvlqeosuxb .gt_font_italic {
+  font-style: italic;
+}
+
+#hvlqeosuxb .gt_super {
+  font-size: 65%;
+}
+
+#hvlqeosuxb .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#hvlqeosuxb .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#hvlqeosuxb .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#hvlqeosuxb .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#hvlqeosuxb .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#hvlqeosuxb .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#hvlqeosuxb .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Current Alcohol Use">Current Alcohol Use</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Yes&lt;/strong&gt;, N = 4,045&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>Yes</strong>, N = 4,045<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;No&lt;/strong&gt;, N = 13,187&lt;span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/span&gt;"><strong>No</strong>, N = 13,187<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Sex</td>
+<td headers="stat_1" class="gt_row gt_center"><br /></td>
+<td headers="stat_2" class="gt_row gt_center"><br /></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Female</td>
+<td headers="stat_1" class="gt_row gt_center">2,242 (27%)</td>
+<td headers="stat_2" class="gt_row gt_center">5,959 (73%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Male</td>
+<td headers="stat_1" class="gt_row gt_center">1,728 (20%)</td>
+<td headers="stat_2" class="gt_row gt_center">7,055 (80%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Race</td>
+<td headers="stat_1" class="gt_row gt_center"><br /></td>
+<td headers="stat_2" class="gt_row gt_center"><br /></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    White</td>
+<td headers="stat_1" class="gt_row gt_center">2,265 (27%)</td>
+<td headers="stat_2" class="gt_row gt_center">6,269 (73%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Black or African American</td>
+<td headers="stat_1" class="gt_row gt_center">308 (15%)</td>
+<td headers="stat_2" class="gt_row gt_center">1,728 (85%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Multiple-Hispanic</td>
+<td headers="stat_1" class="gt_row gt_center">669 (25%)</td>
+<td headers="stat_2" class="gt_row gt_center">1,986 (75%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Hispanic/Latino</td>
+<td headers="stat_1" class="gt_row gt_center">339 (21%)</td>
+<td headers="stat_2" class="gt_row gt_center">1,280 (79%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Multiple-Non-Hispanic</td>
+<td headers="stat_1" class="gt_row gt_center">235 (24%)</td>
+<td headers="stat_2" class="gt_row gt_center">725 (76%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Asian</td>
+<td headers="stat_1" class="gt_row gt_center">91 (11%)</td>
+<td headers="stat_2" class="gt_row gt_center">738 (89%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Am Indian/Alaska Native</td>
+<td headers="stat_1" class="gt_row gt_center">37 (32%)</td>
+<td headers="stat_2" class="gt_row gt_center">78 (68%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Native Hawaiian/Other PI</td>
+<td headers="stat_1" class="gt_row gt_center">20 (23%)</td>
+<td headers="stat_2" class="gt_row gt_center">65 (77%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">SexOrientation</td>
+<td headers="stat_1" class="gt_row gt_center"><br /></td>
+<td headers="stat_2" class="gt_row gt_center"><br /></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Heterosexual</td>
+<td headers="stat_1" class="gt_row gt_center">2,707 (22%)</td>
+<td headers="stat_2" class="gt_row gt_center">9,468 (78%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Bisexual</td>
+<td headers="stat_1" class="gt_row gt_center">623 (32%)</td>
+<td headers="stat_2" class="gt_row gt_center">1,328 (68%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Not sure</td>
+<td headers="stat_1" class="gt_row gt_center">152 (24%)</td>
+<td headers="stat_2" class="gt_row gt_center">480 (76%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Gay or Lesbian</td>
+<td headers="stat_1" class="gt_row gt_center">114 (22%)</td>
+<td headers="stat_2" class="gt_row gt_center">408 (78%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Grade</td>
+<td headers="stat_1" class="gt_row gt_center"><br /></td>
+<td headers="stat_2" class="gt_row gt_center"><br /></td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    9</td>
+<td headers="stat_1" class="gt_row gt_center">706 (16%)</td>
+<td headers="stat_2" class="gt_row gt_center">3,850 (84%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    10</td>
+<td headers="stat_1" class="gt_row gt_center">874 (20%)</td>
+<td headers="stat_2" class="gt_row gt_center">3,477 (80%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    11</td>
+<td headers="stat_1" class="gt_row gt_center">1,100 (27%)</td>
+<td headers="stat_2" class="gt_row gt_center">3,050 (73%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    12</td>
+<td headers="stat_1" class="gt_row gt_center">1,316 (33%)</td>
+<td headers="stat_2" class="gt_row gt_center">2,696 (67%)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="3"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> n (%)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<p>Table 2 displays the performance metrics of the model on both training and testing datasets. On the training set, the model achieved a sensitivity of 0.80, indicating it correctly identified 80% of the positive cases. The specificity, representing the model’s ability to correctly identify negative cases, stood at 0.77 for both training and testing sets. The overall accuracy, or the proportion of true results among the total number of cases examined, was 0.78 for the training set and 0.77 for the testing set. These metrics suggest that the model demonstrates consistent performance across both training and unseen data.</p>
+</div>
+<div id="table-2-performance-metrics-for-the-classification-tree" class="section level3">
+<h3>Table 2, Performance Metrics for the Classification Tree</h3>
+<div id="uwiddtflam" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#uwiddtflam table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#uwiddtflam thead, #uwiddtflam tbody, #uwiddtflam tfoot, #uwiddtflam tr, #uwiddtflam td, #uwiddtflam th {
+  border-style: none;
+}
+
+#uwiddtflam p {
+  margin: 0;
+  padding: 0;
+}
+
+#uwiddtflam .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 25px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#uwiddtflam .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#uwiddtflam .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#uwiddtflam .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#uwiddtflam .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#uwiddtflam .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#uwiddtflam .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#uwiddtflam .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#uwiddtflam .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#uwiddtflam .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#uwiddtflam .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#uwiddtflam .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#uwiddtflam .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#uwiddtflam .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#uwiddtflam .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uwiddtflam .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#uwiddtflam .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#uwiddtflam .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#uwiddtflam .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uwiddtflam .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#uwiddtflam .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uwiddtflam .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#uwiddtflam .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_footnote {
+  margin: 0px;
+  font-size: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uwiddtflam .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#uwiddtflam .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uwiddtflam .gt_left {
+  text-align: left;
+}
+
+#uwiddtflam .gt_center {
+  text-align: center;
+}
+
+#uwiddtflam .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#uwiddtflam .gt_font_normal {
+  font-weight: normal;
+}
+
+#uwiddtflam .gt_font_bold {
+  font-weight: bold;
+}
+
+#uwiddtflam .gt_font_italic {
+  font-style: italic;
+}
+
+#uwiddtflam .gt_super {
+  font-size: 65%;
+}
+
+#uwiddtflam .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#uwiddtflam .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#uwiddtflam .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#uwiddtflam .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#uwiddtflam .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#uwiddtflam .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#uwiddtflam .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Dataset">Dataset</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sensitivity">Sensitivity</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Specificity">Specificity</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Accuracy">Accuracy</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Dataset" class="gt_row gt_left">Training</td>
+<td headers="Sensitivity" class="gt_row gt_right">0.80</td>
+<td headers="Specificity" class="gt_row gt_right">0.77</td>
+<td headers="Accuracy" class="gt_row gt_right">0.78</td></tr>
+    <tr><td headers="Dataset" class="gt_row gt_left">Testing</td>
+<td headers="Sensitivity" class="gt_row gt_right">0.78</td>
+<td headers="Specificity" class="gt_row gt_right">0.77</td>
+<td headers="Accuracy" class="gt_row gt_right">0.77</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<div id="discussion" class="section level2">
+<h2>Discussion</h2>
+<p>Our study clarify the risk factors contributing to alcohol use among adolescents. Results show vaping, marijuana, pain medication, and cigarette use as key contributors. These findings echo the notion of vaping as an entry point to other substance use, a stance supported by recent research (Boccio et al., 2022). Our analysis also highlights a prevalent trend of polysubstance use rather than isolated substance use, which is corroborated by data indicating a significant proportion of adolescents engaging in the concurrent use of alcohol and other substances (Goodwin et al., 2022).</p>
+<p>Despite the insights provided, our study’s cross-sectional design precludes us from inferring causation from the associations identified. Therefore, future research should implement longitudinal designs that can trace these risk factors over time, offering a clearer view of their causal relationships and the development of tailored preventive measures. Building on our study’s foundation and addressing its limitations will not only enhance our understanding of adolescent alcohol use but also support the advancement of targeted intervention strategies.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+</div>
+
+</div>
+<div class="main">
+<p>According to Figure 1<br><br> The study found a strong link between <strong>vaping</strong> and alcohol consumption among adolescents, with <strong>87.5%</strong> of those <strong>currently vaping also using alcohol</strong>.<br><br> Additional layers of complexity are introduced when considering other factors like <strong>marijuana</strong> and <strong>pain medicine</strong> use, <strong>racial background</strong>, and <strong>hopelessness</strong>. For example, among non-vapers, marijuana use and feelings of hopelessness are associated with <strong>current alcohol consumption</strong>.<br><br> <strong>Gender</strong> also plays a role, particularly in adolescents who do not vape but have used marijuana and belong to specific racial groups; <strong>70.2% of males</strong> in this subset <strong>answered no to current</strong> use compared to <strong>52.6%</strong> of <strong>females who currenylu consume it</strong>.<br><br> <em>Figure 1, Current Alcohol Use in Youth Decision Tree</em><br><br> <img src="outputs/tree.png" class="main_pic" style="width:100.0%" /></p>
+<img src="https://brand.fiu.edu/_assets/images/fiu-alone.png" class="main-img-left" />
+
+</div>
+</div>
+
+
+
+</body>
+</html>

@@ -40,6 +40,8 @@ analysis <-
     FirstAlcoholBefore13, SexBefore13, SexuallyActive, EverHadSex,
     FirstMarihuanaBefore13, SuicideInjuryMedicalAttention
   ))
+
+saveRDS(analysis, "outputs/analysis.rds")
 ```
 
 
@@ -78,7 +80,8 @@ options(survey.lonely.psu = "adjust")
 
 
 alcohol_use_demographics <-
-  analysis |>
+  imputed_data |>
+   filter(.imp == 1) |> 
   mutate(CurrentlyAlcohol = case_when(
     CurrentlyAlcohol == 0 ~ "No",
     CurrentlyAlcohol == 1 ~ "Yes"
@@ -248,6 +251,9 @@ saveRDS(cart_fit, "outputs/cart_fit.rds")
 ```
 
 ```{r}
+cart_fit <- 
+  readRDS(here::here("outputs", "cart_fit.rds"))
+
 tree_pred <- 
   augment(cart_fit, analysis_train) |> 
   select(CurrentlyAlcohol, .pred_class, .pred_1, .pred_0)
@@ -282,6 +288,8 @@ metrics <-
     estimate = .pred_class, 
     event_level = "second")
 
+saveRDS(metrics, "outputs/metrics.rds")
+
 ```
 
 ```{r}
@@ -295,4 +303,15 @@ cart_fit |>
 
 
 In a study involving 6036 adolescents, current alcohol use was examined in relation to various behavioral and demographic factors. A significant predictor of alcohol consumption was found to be vaping habits. Specifically, a substantial 87.5% of those who are currently vaping also consume alcohol. Conversely, among those not engaged in vaping, 68.9% abstain from alcohol. Further insights emerge when considering marijuana use. Among non-vapers, those who have never used marijuana predominantly abstain from alcohol, with a notable 77.2% not consuming. In contrast, 65.1% of non-vapers who have experimented with marijuana also consume alcohol. Pain medicine usage further refines this picture. Adolescents who neither vape nor use marijuana but have taken pain medicine show varied alcohol consumption based on their racial backgrounds. For instance, among this group, a significant 55.9% of individuals identifying as Black, Hispanic, or Multiple Non-Hispanic reported alcohol use. Interestingly, feelings of hopelessness and gender also play a role. Within a subset of non-vapers who have used marijuana and belong to specific racial groups, those experiencing feelings of hopelessness had a higher tendency, 62.1%, to consume alcohol. Furthermore, among adolescents not feeling hopeless in this subset, a gender divide is evident: 70.2% of males abstain from alcohol, whereas 52.6% of females consume it. In conclusion, while vaping and marijuana usage emerge as strong predictors of alcohol consumption in adolescents, other factors like pain medicine use, race, emotional state, and gender provide a more nuanced understanding of alcohol use patterns in this demographic.
+
+
+```{r}
+last_fit <- 
+  last_fit(cart_final_wf, 
+           split = analysis_split, 
+           metrics = metric_set(roc_auc, sens, yardstick::spec))
+
+collect_metrics(last_fit, event_level = "second")
+  
+```
 
