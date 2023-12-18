@@ -12,14 +12,14 @@ main_findings:
   - "According to Figure 1"
   - "The study found a strong link between **vaping** and alcohol consumption among adolescents, with **87.5%** of those **currently vaping also using alcohol**."
   - "Additional layers of complexity are introduced when considering other factors like **marijuana** and **pain medicine** use, **racial background**, and **hopelessness**. For example, among non-vapers, marijuana use and feelings of hopelessness are associated with **current alcohol consumption**." 
-  - "**Gender** also plays a role, particularly in adolescents who do not vape but have used marijuana and belong to specific racial groups; **70.2% of males** in this subset **answered no to current** use compared to **52.6%** of **females who currenylu consume it**." 
+  - "**Gender** also plays a role, particularly in adolescents who do not vape but have used marijuana and belong to specific racial groups; **70.2% of males** in this subset **answered no to current use** use compared to **52.6%** of **females who currently consume it**." 
   - "*Figure 1, Current Alcohol Use in Youth Decision Tree*"
   - '![](outputs/tree.png){.main_pic width=100%}'
 logoleft_name: '![](https://brand.fiu.edu/_assets/images/fiu-alone.png){.main-img-left}'
 primary_colour: "#081E3F"
 titlebox_bordercol: "#B6862C"
 main_textsize: "50px"
-body_textsize: "37px"
+body_textsize: "33px"
 main_width: 0.4
 title_textsize: "90px"
 output: 
@@ -57,11 +57,15 @@ dev.off()
 ```{r, include=FALSE}
 knitr::write_bib(c('posterdown', 'rmarkdown','pagedown'), 'packages.bib')
 ```
+<br/>
 
 ## Introduction
 
-Substance use among adolescents in the United States represents a substantial public health challenge. According to the National Survey on Drug Use and Health, approximately 22.9% of individuals aged 12 to 17 have consumed alcohol at least once (SAMHSA, 2021). The ramifications of substance use during this developmental stage are extensive, with correlations to detrimental mental health outcomes (Esmaeelzadeh et al., 2018; Kim, 2021; Meza et al., 2023), compromised academic performance (Bryant et al., 2003; Huỳnh et al., 2019), increased delinquency and criminal behavior (Childs et al., 2023; Gajos et al., 2023; Hoeben et al., 2021; Lee et al., 2022; Warren et al., 2016), and higher instances of teen pregnancy (Russotti et al., 2023; Salas-Wright et al., 2015, 2016). Given the prevalence and severe consequences of adolescent alcohol use, it is imperative to examine the factors that predispose youth to substance use, identifying those at elevated risk, and developing targeted preventative programs. This study used the 2021 Youth Risk Behavior Surveillance System (YRBSS) dataset to investigate the primary risk factors and their interplay. Our analysis seeks to understand patterns that could inform more efficacious preventive and intervention approaches, with the ultimate goal of preventing alcohol use among adolescents.
+Substance use among adolescents in the United States represents a substantial public health challenge. According to the National Survey on Drug Use and Health, approximately 22.9% of individuals aged 12 to 17 have consumed alcohol at least once (SAMHSA, 2021). The ramifications of substance use during this developmental stage are extensive, with correlations to detrimental mental health outcomes (Esmaeelzadeh et al., 2018; Kim, 2021; Meza et al., 2023), compromised academic performance (Bryant et al., 2003; Huỳnh et al., 2019), increased delinquency and criminal behavior (Childs et al., 2023), and higher instances of teen pregnancy (Russotti et al., 2023). 
 
+Given the prevalence and severe consequences of adolescent alcohol use, it is imperative to examine the factors that predispose youth to substance use, identifying those at elevated risk, and developing targeted preventative programs. This study used the 2021 Youth Risk Behavior Surveillance System (YRBSS) dataset to investigate the primary risk factors and their interplay. Our analysis seeks to understand patterns that could inform more efficacious preventive and intervention approaches, with the ultimate goal of preventing alcohol use among adolescents.
+
+<br/>
 
 ## Methods
 ### Data Source
@@ -79,10 +83,14 @@ Substance use among adolescents in the United States represents a substantial pu
 - Initial poor sensitivity led to the application of downsampling methods to balance classes.
 Algorithm retrained and tested using the balanced dataset.
 
+<br/>
+<br/>
+
 ## Results
 
 Table 1 presents the demographic distribution of current alcohol use from the 2021 YRBS data. Out of the sample, 4,045 individuals reported current alcohol use. A breakdown by gender indicates that 27% of females and 20% of males currently consume alcohol. American Indian/Alaska Natives lead in alcohol use prevalence, followed closely by White respondents and then by those identifying as Multiple-Hispanic. On the contrary, the Asian group reported the lowest alcohol consumption rates among all racial categories. In terms of sexual orientation, bisexual respondents reported the highest prevalence of alcohol use at 32%. This is followed by those who identified as "not sure", while both homosexual and heterosexual groups presented similar rates of alcohol consumption
 
+<br/>
 <br/>
 <br/>
 
